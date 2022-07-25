@@ -1,0 +1,23 @@
+{
+  "name": "modern-back-end-with-ts-prisma-postgres",
+  "version": "1.0.0",
+  "description": "Crialção de uma api moderna com prisma, typescript e postgres",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvths-learning/modern-back-end-with-ts-prisma-postgres.git"
+  },
+  "author": "Tiago Henrique",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dvths-learning/modern-back-end-with-ts-prisma-postgres/issues"
+  },
+  "homepage": "https://github.com/dvths-learning/modern-back-end-with-ts-prisma-postgres#readme",
+  "devDependencies": {
+    "prisma": "^4.1.0",
+    "typescript": "^4.7.4"
+  }
+}
