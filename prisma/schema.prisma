@@ -11,17 +11,23 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  email     String @unique
-  firstname String
-  lastname  String
-  socila    Json?
+  id         Int                @id @default(autoincrement())
+  email      String             @unique
+  firstname  String
+  lastname   String
+  socil      Json?
+  course     CourseEnrollment[]
+  // para representar tanto o professor que avaliou o teste quanto o aluno que fez o test
+  testResult TestResult[]       @relation(name: "results")
+  testGraded TestResult[]       @relation(name: "graded")
 }
 
 model Course {
-  id            Int     @id @default(autoincrement())
+  id            Int                @id @default(autoincrement())
   name          String
   courseDetails String?
+  members       CourseEnrollment[]
+  Test          Test[]
 }
 
 model Test {
@@ -29,10 +35,46 @@ model Test {
   updatedAt   DateTime     @updatedAt
   name        String // nome do teste
   date        DateTime // data do teste
+  // 1:N -> campo de relação com a tabela TestResult
+  courseId    Int
+  course      Course       @relation(fields: [courseId], references: [id])
+  testResults TestResult[]
 }
 
 model TestResult {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   result    Int
+  // campo de relação com Test: define a chave estrangeira
+  // o atributo @relation() mapeia a relação escalar testId
+  // para o id da tabela Test
+  testId    Int
+  test      Test     @relation(fields: [testId], references: [id])
+  studentId Int
+  student   User     @relation(name: "results", fields: [studentId], references: [id])
+  graderId  Int
+  gradedBy  User     @relation(name: "graded", fields: [graderId], references: [id])
+}
+
+model CourseEnrollment {
+  createdAt DateTime @default(now())
+  // Usa um enum para indicar se um usuário é um professor ou aluno
+  role      UserRole
+  // Campos de relação
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  courseId  Int
+  course    Course   @relation(fields: [courseId], references: [id])
+
+  // Define uma primary key composta
+  @@id([userId, courseId])
+  // Cria um índice com os dois campos:
+  // https://www.prisma.io/docs/concepts/components/prisma-schema/indexes
+  @@index([userId, role])
+}
+
+// Cria um enum pra definir se um user é aluno ou professor
+enum UserRole {
+  STUDENT
+  TEACHER
 }
