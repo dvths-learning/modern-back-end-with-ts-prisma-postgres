@@ -4,7 +4,8 @@
   "description": "Crialção de uma api moderna com prisma, typescript e postgres",
   "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "",
+    "seed": "prisma deb seed --preview-feature"
   },
   "repository": {
     "type": "git",
