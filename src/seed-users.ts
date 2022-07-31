@@ -11,7 +11,6 @@ async function main() {
   await prisma.test.deleteMany({}); // isso não é usado em produção
   await prisma.course.deleteMany({}); // isso não é usado em produção
 
-
   // função que semeia um novo usuário
   const user = await prisma.user.create({
     data: {
@@ -51,13 +50,25 @@ async function main() {
           },
         ],
       },
+      // Cria o usuário como um professor relacionado ao curso
+      members: {
+        create: {
+          // Define a regra como professor
+          role: 'TEACHER',
+          user: {
+            // Conecta o usuário pois ele já existe
+            connect: { email: user.email },
+          },
+        },
+      },
     },
     // Inclui na saída os valores das tabelas relacionadas
     include: {
-      test: true
-    }
+      test: true,
+      members: { include: { user: true } },
+    },
   });
-  console.log(course)
+  console.log(course);
 }
 
 main()
