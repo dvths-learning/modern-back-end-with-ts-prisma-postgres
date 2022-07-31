@@ -15,7 +15,7 @@ model User {
   email      String             @unique
   firstname  String
   lastname   String
-  socil      Json?
+  social      Json?
   course     CourseEnrollment[]
   // para representar tanto o professor que avaliou o teste quanto o aluno que fez o test
   testResult TestResult[]       @relation(name: "results")
@@ -27,7 +27,7 @@ model Course {
   name          String
   courseDetails String?
   members       CourseEnrollment[]
-  Test          Test[]
+  test          Test[]
 }
 
 model Test {
